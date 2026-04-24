@@ -80,6 +80,7 @@ public static class ArtistasExtensions
             }
             artistaAAtualizar.Nome = artistaRequestEdit.nome;
             artistaAAtualizar.Bio = artistaRequestEdit.bio;
+            artistaAAtualizar.FotoPerfil = artistaRequestEdit.fotoPerfil;
             dal.Atualizar(artistaAAtualizar);
             return Results.Ok();
         });

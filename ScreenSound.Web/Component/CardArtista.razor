@@ -22,11 +22,11 @@
     public ArtistaResponse? Artista { get; set; }
 
     public string? Imagem { get; set; }
+    public string[] ExtensoesFoto { get; set; } = { ".jpg", ".jpeg", ".png" };
 
     protected override void OnInitialized()
     {
-        Imagem = Artista!.FotoPerfil!.Contains("Foto") ? $"https://localhost:7089/{Artista!.FotoPerfil}" : "images/cardArtista.png";
-
+        Imagem = ExtensoesFoto.Any(x => Artista!.FotoPerfil!.Contains(x)) ? $"{Artista!.FotoPerfil}" : "images/cardArtista.png";
     }
 
     private string LimitaCaracteres(string texto, int tamanhoMaximo)

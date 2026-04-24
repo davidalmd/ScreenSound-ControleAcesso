@@ -15,21 +15,26 @@
             <MudTextField Class="mt-4" T="string" Placeholder="Nome do Artista"
                           @bind-Value="Nome"
                           Variant="Variant.Outlined"
-                          Required="true"
+                          Required
                           RequiredError="Campo obrigatório." />
 
             <MudTextField Class="mt-4" T="string" Placeholder="Biografia do artista"
                           @bind-Value="Bio"
                           Variant="Variant.Outlined"
                           Lines="4"
-                          Required="true"
+                          Required
+                          RequiredError="Campo obrigatório." />
+
+            <MudTextField Class="mt-4" T="string" Placeholder="Foto de Perfil do artista"
+                          @bind-Value="Foto"
+                          Variant="Variant.Outlined"
+                          Required
                           RequiredError="Campo obrigatório." />
 
             <div class="d-flex align-center justify-space-between mt-4">
                 
-                <MudRating 
-                    @bind-SelectedValue="NotaMedia"
-                    @onclick="AvaliarArtista"/>
+                <MudRating @bind-SelectedValue="NotaMedia"
+                           @onclick="AvaliarArtista" />
 
                 <div>
                     <MudButton Variant="Variant.Filled"
@@ -59,10 +64,8 @@
 }
 else
 {
-    <MudProgressCircular Indeterminate="true"></MudProgressCircular>
+    <MudProgressCircular Indeterminate></MudProgressCircular>
 }
-
-
 
 @code {
     bool success;
@@ -71,6 +74,7 @@ else
     public ArtistaResponse? Artista { get; set; }
     public string? Nome { get; set; } = string.Empty;
     public string? Bio { get; set; } = string.Empty;
+    public string? Foto { get; set; } = string.Empty;
     public int NotaMedia { get; set; }
     [Parameter]
     public string? NomeArtista { get; set; }
@@ -85,6 +89,7 @@ else
         }
         Nome = Artista!.Nome;
         Bio = Artista!.Bio;
+        Foto = Artista!.FotoPerfil;
     }
     private void VoltarParaListagem()
     {
@@ -100,7 +105,7 @@ else
     {
         try
         {
-            var requestEdit = new ArtistaRequestEdit(Artista.Id, Nome, Bio, Artista.FotoPerfil);
+            var requestEdit = new ArtistaRequestEdit(Artista.Id, Nome, Bio, Foto);
             await artistaAPI.UpdateArtistaAsync(requestEdit);
             Snackbar.Add("Artista atualizado com sucesso!", Severity.Success);
             navigationManager.NavigateTo("/Artistas");
@@ -131,7 +136,6 @@ else
         {
             await artistaAPI.AvaliaArtistaAsync(Artista.Id, NotaMedia);
             Snackbar.Add("Artista avaliado com sucesso!", Severity.Success);
-            navigationManager.NavigateTo("/Artistas");
         }
         catch (Exception)
         {
